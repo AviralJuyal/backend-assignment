@@ -5,6 +5,9 @@ const app = express(); // Creating an instance of express
 const port = 5001; // Port number where the server will listen
 require("dotenv").config(); // Importing and configuring dotenv to manage environment variables
 
+// const { job } = require("./scheduler");
+const { job } = require("./scheduler/index");
+
 // Database Connection
 require("./connection/dbconn"); // Importing database connection settings
 
@@ -16,7 +19,11 @@ app.use(cors()); // Applying CORS middleware to allow cross-origin requests
 // Root route
 app.get("/", (req, res) => {
   res.send("Hello World!"); // Sending a response when the root URL is accessed
+  job();
 });
+
+// Route for currency endpoints
+app.use("/api/currency", require("./routes/currencyRoutes")); // Route for currency endpoints
 
 // 404 Error Handling
 // Define a route for handling 404 errors
