@@ -40,6 +40,3 @@ app.use("*", (req, res, next) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`); // Console log to indicate that the server is running
 });
-
-// Export the Express API
-module.exports = app;
