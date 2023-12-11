@@ -31,3 +31,28 @@ exports.createCurrency = async (req, res) => {
     });
   }
 };
+
+// API endpoint
+exports.convertCurrency = async (req, res) => {
+  try {
+    const { fromCurrency, toCurrency, date } = req.body;
+
+    // Fetch historical data for both currencies
+    const fromCurrencyData = await axios.get(
+      `https://api.coingecko.com/api/v3/coins/${fromCurrency}/history?date=${date}`
+    );
+    const toCurrencyData = await axios.get(
+      `https://api.coingecko.com/api/v3/coins/${toCurrency}/history?date=${date}`
+    );
+
+    // Calculate the conversion rate
+    const rate =
+      fromCurrencyData.data.market_data.current_price.usd /
+      toCurrencyData.data.market_data.current_price.usd;
+
+    res.status(200).json({ success: true, rate });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+};
